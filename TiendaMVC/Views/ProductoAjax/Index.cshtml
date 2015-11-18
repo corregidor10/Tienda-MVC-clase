@@ -1,0 +1,102 @@
+﻿@model IEnumerable<TiendaMVC.Models.Producto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Productos </h2>
+
+<input type="text" id="txtBusqueda" placeholder="Busca por producto" /> <input type="button" id="btnBus" value="Buscar" class="glyphicon-search" />
+
+<div id="listado">
+
+    @Html.Partial("_listadoProducto", Model)
+
+</div>
+
+<button id="btnAdd" type="button" class="btn btn-info" data-toggle="modal" data-target="#mostrarformulario"> Añadir </button>
+
+ @* usando comandos bootstrap tambien podríamos relacionarlo con el dialogo data-toggle="modal" data-target="#mostrarformulario"*@
+
+<div class="modal fade" id="mostrarformulario">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"> Nuevo Producto</h4>
+            </div>
+            <div class="modal-body">
+   
+                    <input type="text" id="txtNombre" placeholder="Nombre" />
+                    <br />
+                    <input type="text" id="txtPC" placeholder="PC" />
+                    <br />
+                    <input type="text" id="txtPVP" placeholder="PVP" />
+                    <br />
+                    <input type="text" id="txtFab" placeholder="Fabricante" />
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary"id="btnGuardar" data-dismiss="modal"> Guardar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+@section MiJavaScript
+{
+    <script>
+
+        function alta() {
+
+            var data = {
+                NombreProducto: $("#txtNombre").val(),
+                Fabricante: $("#txtFab").val(),
+                PC: $("#txtPC").val(),
+                PVP: $("#txtPVP").val(),
+                IdCategoria: 1
+
+
+            };
+
+            var url = "@Url.Action("Alta")";
+            $.ajax({
+                url: url,
+                data: JSON.stringify(data),
+                type: "POST",
+                headers: { "Content-Type": "application/json" },
+                dataType: "json",
+                success: function(res) {
+                    if (res.IdProducto > 0) {
+                        //$("#mostrarformulario").modal("hide"); una opcion para ocultar el campo
+                       $("#txtBusqueda").val("");
+                        listado();
+                    } else {
+                        alert("Error al Guardar");
+                    }
+                }
+
+        });
+        }
+
+        function listado() {
+            var url = "@Url.Action("Buscar")";
+            var txt = $("#txtBusqueda").val();
+            url += "?nombre=" + txt;
+
+            $("#listado").load(url);
+        };
+
+        $("#btnGuardar").click(alta);
+            $("#btnBus").click(listado);
+            
+        
+
+    </script>
+
+}

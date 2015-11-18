@@ -1,0 +1,46 @@
+﻿@using TiendaMVC.Models
+@model System.Data.Entity.DbSet<TiendaMVC.Models.Etiqueta>
+
+@{
+    ViewBag.Title = "title";
+    var alm = ViewBag.losalmacenes as IEnumerable<Almacen>;
+}
+<div class="col-md-9"> @*en bootstrap la pantalla se divide en 12 celdas*@
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <h2>@item.NombreEtiqueta</h2>
+            <ul>
+                @foreach (var pro in item.Producto)
+                {
+                    <li>@pro.NombreProducto</li>
+                }
+
+            </ul>
+        </div>
+    }
+</div>
+
+<div class="col-md-3">
+
+    <h1> Almacenes </h1>
+
+    <ul>
+        @foreach (var almacenes in alm)
+        {
+            <li> @almacenes.NombreAlmacen</li>
+        }
+
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+</div>
