@@ -89,7 +89,7 @@
             var txt = $("#txtBusqueda").val();
             url += "?nombre=" + txt;
 
-            $("#listado").load(url);
+            $("#listado").load(encodeURI(url)); // con encode URI transformamos espacios, tildes a nuestra codificación
         };
 
         $("#btnGuardar").click(alta);
